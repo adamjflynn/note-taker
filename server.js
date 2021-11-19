@@ -4,7 +4,7 @@ const fs = require('fs');
 
 const path = require('path');
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 3002;
 
 const app = express();
 
@@ -13,7 +13,7 @@ const app = express();
 // routes
 
 app.get('/', (rep, res) => {
-    res.sendFile(path.join(__dirname, './public/notes.html'));
+    res.sendFile(path.join(__dirname, './public/index.html'));
 });
 
 app.get('/notes', (req, res) => {
@@ -30,6 +30,29 @@ app.get("/api/notes", function (req, res) {
     })
 });
 
+// function to post data to json
+
+app.post("/api/notes", function (req, res) {
+    const newNote = req.body
+    let notesDB = []
+    fs.readFile(path.join(__dirname + "/db/db.json"), "utf8", function (err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        if (data === "") { // if starting from an empty json file
+            notesDB.push({ "id": 1, "title": newNote.title, "text": newNote.text });
+        } else {
+            notesDB = JSON.parse(data);
+            notesDB.push({ "id": notesDB.length + 1, "title": newNote.title, "text": newNote.text });
+        }
+        // updated notes pushed to db.json
+        fs.writeFile((path.join(__dirname + "/db/db.json")), JSON.stringify(notesDB), function (error) {
+            if (error) { return console.log(error); }
+            res.json(notesDB);
+        });
+    });
+  });
+
 app.listen(PORT, () => {
-    console.log('API server now live at http;//localhost:${PORT}!');
+    console.log(`API server now live at ${PORT}!`);
 });
