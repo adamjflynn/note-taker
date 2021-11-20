@@ -20,7 +20,7 @@
   ## Usage
   Using the application from the deployed Heroku landing page select 'Get Started', this will lead you to a new page to create new notes, as well as displaying any notes that have been saved previously.  
   ![Screenshot of Index page](notetakr.index.JPG)
-  ![Screenshot of Application]("notetakr.notes.JPG")
+  ![Screenshot of Application](notetakr.notes.JPG)
 
   ## License
         
